@@ -8,7 +8,7 @@ namespace ExcelReader
 {
     internal class ReadFromFile
     {
-        public static void Read()
+        public static List<Match> Read()
         {
             FileInfo existingFile = new FileInfo(@"C:\Projects\Tutorials\ExcelReader\ExcelReader\Fifa.xlsx");
             //use EPPlus
@@ -41,11 +41,16 @@ namespace ExcelReader
                     tableData.Add(match);
                 }
 
-                ConsoleTableBuilder
-                    .From(tableData)
-                    .ExportAndWriteLine();
-                Console.WriteLine("\n\n");
+                return tableData;
             }
+        }
+
+        private static void ShowData(List<Match> tableData)
+        {
+            ConsoleTableBuilder
+                                .From(tableData)
+                                .ExportAndWriteLine();
+            Console.WriteLine("\n\n");
         }
     }
 }
