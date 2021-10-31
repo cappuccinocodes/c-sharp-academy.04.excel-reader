@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ExcelReader": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\\\Projects\\\\Tutorials\\\\ExcelReader\\\\ExcelReader"
+    }
+  }
+}
