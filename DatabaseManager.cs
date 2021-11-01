@@ -12,9 +12,9 @@ namespace ExcelReader
         internal static void CheckDatabase()
         {
 
-            string databasePath = ConfigurationManager.AppSettings.Get("DatabasePath");
+            string filePath = ConfigurationManager.AppSettings.Get("FilePath");
             Console.WriteLine("\n\nHi there! I'm checking if database exists\n\n");
-            bool dbExists = File.Exists(databasePath);
+            bool dbExists = File.Exists(filePath);
 
             if (!dbExists)
             {
@@ -58,17 +58,17 @@ namespace ExcelReader
         {
             List<Match> seedData = ReadFromFile.Read();
 
-            string date;
-            Competition competition;
-            string level;
-            string score;
-            string opponent;
-            int shots;
-            int shotsAgainst;
-            int possession;
-            int passing;
+            //string date;
+            //Competition competition;
+            //string level;
+            //string score;
+            //string opponent;
+            //int shots;
+            //int shotsAgainst;
+            //int possession;
+            //int passing;
 
-            for (int i = 1; i < seedData.Count; i++ )
+            for (int i = 0; i < seedData.Count; i++ )
             {
                 //date = seedData[i].Date;
                 //competition = seedData[i].Competition;
@@ -86,6 +86,16 @@ namespace ExcelReader
                     var tableCmd = connection.CreateCommand();
                     tableCmd.CommandText = 
                         $@"INSERT INTO matches 
+                             (Date,
+                              Competition,
+                              Level,
+                              Score,
+                              Opponent,
+                              Shots,
+                              ShotsAgainst,
+                              Possession,
+                              Passing)
+
                            VALUES (
                              '{seedData[i].Date}', 
                              {seedData[i].Competition}, 
@@ -97,6 +107,7 @@ namespace ExcelReader
                              {seedData[i].Possession}, 
                              {seedData[i].Passing}
                            )";
+                    Console.WriteLine(tableCmd.CommandText);
                     tableCmd.ExecuteNonQuery();
                     connection.Close();
                 }

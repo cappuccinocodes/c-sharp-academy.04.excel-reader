@@ -2,6 +2,8 @@
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
 using System.IO;
 
 namespace ExcelReader
@@ -10,7 +12,8 @@ namespace ExcelReader
     {
         public static List<Match> Read()
         {
-            FileInfo existingFile = new FileInfo(@"C:\Projects\Tutorials\ExcelReader\ExcelReader\Fifa.xlsx");
+            string filePath = ConfigurationManager.AppSettings.Get("FilePath");
+            FileInfo existingFile = new FileInfo(filePath);
             //use EPPlus
             using (ExcelPackage package = new ExcelPackage(existingFile))
             {
@@ -20,6 +23,8 @@ namespace ExcelReader
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
                 int colCount = worksheet.Dimension.End.Column;  //get Column Count
                 int rowCount = worksheet.Dimension.End.Row;     //get row count
+                worksheet.Columns[2].Style.Numberformat.Format = "yyyy-mm-dd";
+
 
                 for (int row = 2; row <= rowCount; row++)
                 {
@@ -27,8 +32,8 @@ namespace ExcelReader
 
                     for (int col = 1; col <= colCount; col++)
                     {
-                        match.Date = worksheet.Cells[row, 1].Value?.ToString().Trim();
-                        match.Competition = Enum.Parse<Competition>(worksheet.Cells[row, 2].Value?.ToString().Trim());
+                        match.Date = worksheet.Cells[row, 1].Style.Numberformat.Format = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+                        match.Competition = Int32.Parse(worksheet.Cells[row, 2].Value?.ToString().Trim());
                         match.Level = worksheet.Cells[row, 3].Value?.ToString().Trim();
                         match.Score = worksheet.Cells[row, 4].Value?.ToString().Trim();
                         match.Opponent = worksheet.Cells[row, 5].Value?.ToString().Trim();
