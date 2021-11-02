@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ExcelReader
@@ -6,6 +7,7 @@ namespace ExcelReader
     internal class Match
     {
         public string Id { get; set; }
+
         public string Date { get; set; }
         public int Competition
         {

@@ -9,25 +9,29 @@ namespace ExcelReader
     internal class DatabaseManager
     {
         static readonly string connectionString = ConfigurationManager.AppSettings.Get("ConnectionString");
+        static readonly string dbPath = ConfigurationManager.AppSettings.Get("DbPath");
+
+        internal static void DeleteDatabase()
+        {
+            File.Delete(dbPath);
+            Console.WriteLine("\n\nDatabase Deleted.\n\n");
+        }
+
         internal static void CheckDatabase()
         {
 
-            string filePath = ConfigurationManager.AppSettings.Get("FilePath");
+            string dbPath = ConfigurationManager.AppSettings.Get("DbPath");
             Console.WriteLine("\n\nHi there! I'm checking if database exists\n\n");
-            bool dbExists = File.Exists(filePath);
+            bool dbExists = File.Exists(dbPath);
 
-            if (!dbExists)
+            if (dbExists)
             {
-                Console.WriteLine("\n\nDatabase doesn't exist, creating one...\n\n");
-                CreateDatabase();
+                DeleteDatabase();
             }
-            else
-            {
-                SeedDatabase();
-            }
+            
         }
 
-        private static void CreateDatabase()
+        internal static void CreateDatabase()
         {
             string connectionString = ConfigurationManager.AppSettings.Get("ConnectionString");
 
@@ -54,32 +58,12 @@ namespace ExcelReader
             }
         }
 
-        private static void SeedDatabase()
+        internal static void SeedDatabase()
         {
             List<Match> seedData = ReadFromFile.Read();
 
-            //string date;
-            //Competition competition;
-            //string level;
-            //string score;
-            //string opponent;
-            //int shots;
-            //int shotsAgainst;
-            //int possession;
-            //int passing;
-
             for (int i = 0; i < seedData.Count; i++ )
             {
-                //date = seedData[i].Date;
-                //competition = seedData[i].Competition;
-                //level = seedData[i].Level;
-                //score = seedData[i].Score;
-                //opponent = seedData[i].Opponent;
-                //shots = seedData[i].Shots;
-                //shotsAgainst = seedData[i].ShotsAgainst;
-                //possession = seedData[i].Possession;
-                //passing = seedData[i].Passing;
-
                 using (var connection = new SqliteConnection(connectionString))
                 {
                     connection.Open();
@@ -113,9 +97,6 @@ namespace ExcelReader
                 }
 
             }
-
-           
-
         }
     }
 }

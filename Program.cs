@@ -10,8 +10,9 @@ namespace ExcelReader
     {
         static void Main(string[] args)
         {
-            ReadFromFile.Read();
             DatabaseManager.CheckDatabase();
+            DatabaseManager.CreateDatabase();
+            DatabaseManager.SeedDatabase();
         }
     }
 }
